@@ -20,6 +20,7 @@ export async function GET (req, {params}) {
 
 export async function POST(req) {
     try{
+        
         const params = {
             mode: 'subscription',
             payment_method_types: ['card'],

@@ -68,6 +68,7 @@ export default function Flashcard() {
                 <MuiLink href="/" sx={{ textDecoration: 'none' }}>
                     <Typography variant="h5" sx={{ flexGrow: 1, fontWeight: 'bold', color: '#fff' }}>
                         CardQuest
+                        Flashcard SaaS
                     </Typography>
                 </MuiLink>
 

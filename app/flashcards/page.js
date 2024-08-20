@@ -20,7 +20,6 @@ export default function Flashcards() {
             const docSnap = await getDoc(docRef)
 
             if (docSnap.exists()) {
-<<<<<<< HEAD
                 const collections = docSnap.data().flashcards || [];
                 const flashcardsWithIds = collections.map((flashcard, index) => ({
                     id: flashcard.name || `generated-id-${index}`,
@@ -33,16 +32,6 @@ export default function Flashcards() {
                 }
                 getFlashcards();
                 }, [user]);
-=======
-                const collections = docSnap.data().flashcards || []
-                setFlashcards(collections)
-            } else {
-                await setDoc(docRef, { flashcards: [] })
-            }
-        }
-        getFlashcards()
-    }, [user])
->>>>>>> 05c52f7ba4fa105687f8c93521de3137a469760b
 
     if (!isLoaded || !isSignedIn) {
         return <></>
@@ -64,11 +53,7 @@ export default function Flashcards() {
                 <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <MuiLink href="/" sx={{ textDecoration: 'none' }}>
                     <Typography variant="h5" sx={{ flexGrow: 1, fontWeight: 'bold', color: '#fff' }}>
-<<<<<<< HEAD
                         CardQuest
-=======
-                        Flashcard SaaS
->>>>>>> 05c52f7ba4fa105687f8c93521de3137a469760b
                     </Typography>
                 </MuiLink>
 
@@ -120,11 +105,7 @@ export default function Flashcards() {
                             backgroundColor: '#FFFFFF'
                         }}>
                             <CardActionArea
-<<<<<<< HEAD
                                 onClick={() => handleCardClick(flashcard.name || `generated-id-${index}`)}
-=======
-                                onClick={() => handleCardClick(flashcard.name)}
->>>>>>> 05c52f7ba4fa105687f8c93521de3137a469760b
                             >
                                 <CardContent>
                                     <Typography variant="h6" sx={{ fontWeight: 500, color: '#333333' }}>

@@ -7,27 +7,31 @@ import Head from 'next/head';
 
 export default function Home() {
   const handleSubmit = async (plan) => {
-    const checkoutSession = await fetch('/api/checkout_session', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        origin: 'http://localhost:3000', //change later when site is up 
-      },
-      body: JSON.stringify({ plan }),
-    })
-
-    const checkoutSessionJson = await checkoutSession.json();
-    if (checkoutSession.statusCode == 500) {
-      console.error(checkoutSession.message);
-      return;
-    }
-
-    const stripe = await getStripe();
-    const { error } = await stripe.redirectToCheckout({
-      sessionId: checkoutSessionJson.id,
-    });
-    if (error) {
-      console.warn(error.message);
+    try {
+      const checkoutSession = await fetch('/api/checkout_session', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          origin: 'http://localhost:3000', // change later when site is up
+        },
+        body: JSON.stringify({ plan }),
+      });
+  
+      const checkoutSessionJson = await checkoutSession.json();
+      if (checkoutSession.status === 500) {
+        console.error(checkoutSessionJson.message);
+        return;
+      }
+  
+      const stripe = await getStripe();
+      const { error } = await stripe.redirectToCheckout({
+        sessionId: checkoutSessionJson.id,
+      });
+      if (error) {
+        console.warn(error.message);
+      }
+    } catch (error) {
+      console.error('Error during checkout:', error);
     }
   };
 
@@ -41,7 +45,7 @@ export default function Home() {
       }}
     >
       <Head>
-        <title>Flashcard SaaS</title>
+        <title>CardQuest</title>
         <meta name="description" content="Create flashcards from your text" />
       </Head>
 
@@ -49,7 +53,7 @@ export default function Home() {
         <Container>
           <Toolbar>
             <Typography variant="h5" sx={{ flexGrow: 1, fontWeight: 'bold', color: '#fff' }}>
-              Flashcard SaaS
+              CardQuest
             </Typography>
             <SignedOut>
               <Button color="inherit" href="/sign-in">Log In</Button>
@@ -77,7 +81,7 @@ export default function Home() {
         }}
       >
         <Typography variant="h2" gutterBottom sx={{ fontWeight: 'bold', color: '#333' }}>
-          Welcome to Flashcard SaaS
+          Welcome to CardQuest
         </Typography>
         <Typography variant="h5" sx={{ mb: 3, color: '#666' }}>
           The easiest way to make flashcards from your text!
@@ -179,7 +183,7 @@ export default function Home() {
                 <Typography variant="h5" gutterBottom sx={{ fontWeight: 'bold' }}>Basic</Typography>
                 <Typography variant="h6" gutterBottom>$5/month</Typography>
                 <Typography sx={{ color: '#666' }}>Access to basic flashcard features and limited storage.</Typography>
-                <Button variant="contained" color="primary" sx={{ mt: 3, borderRadius: 4 }}>
+                <Button variant="contained" color="primary" sx={{ mt: 3, borderRadius: 4 }} onClick={() => handleSubmit('basic')}>
                   Choose Basic
                 </Button>
               </Box>
@@ -200,7 +204,7 @@ export default function Home() {
                 <Typography variant="h5" gutterBottom sx={{ fontWeight: 'bold' }}>Pro</Typography>
                 <Typography variant="h6" gutterBottom>$10/month</Typography>
                 <Typography sx={{ color: '#666' }}>Unlimited flashcards and storage, with priority support.</Typography>
-                <Button variant="contained" color="primary" sx={{ mt: 3, borderRadius: 4 }} onClick={handleSubmit}>
+                <Button variant="contained" color="primary" sx={{ mt: 3, borderRadius: 4 }} onClick={() => handleSubmit('pro')}>
                   Choose Pro
                 </Button>
               </Box>
@@ -210,7 +214,7 @@ export default function Home() {
       </Container>
 
       <Box sx={{ p: 2, textAlign: 'center', backgroundColor: '#212121', color: '#fff' }}>
-        <Typography variant="body2">© {new Date().getFullYear()} Flashcard SaaS. All rights reserved.</Typography>
+        <Typography variant="body2">© {new Date().getFullYear()} CardQuest. All rights reserved.</Typography>
       </Box>
     </Box>
   );

@@ -3,7 +3,7 @@ import { useUser } from "@clerk/nextjs"
 import { collection, getDoc, writeBatch, doc } from "firebase/firestore"
 import { useRouter } from "next/navigation"
 import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
-import { Container, TextField, Typography, Box, Paper, Button, Card, CardActionArea, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Grid,AppBar, Toolbar ,CardContent, CircularProgress } from "@mui/material"
+import { Container, TextField, Typography, Box, Paper, Button, Card, CardActionArea, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Grid,AppBar, Toolbar ,CardContent, CircularProgress, Snackbar } from "@mui/material"
 import { useEffect, useState } from "react"
 import { db } from "@/firebase"
 import { Link as MuiLink } from '@mui/material';
@@ -108,7 +108,7 @@ export default function Generate() {
                 <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <MuiLink href="/" sx={{ textDecoration: 'none' }}>
                     <Typography variant="h5" sx={{ flexGrow: 1, fontWeight: 'bold', color: '#fff' }}>
-                        Flashcard SaaS
+                        CardQuest
                     </Typography>
                 </MuiLink>
 

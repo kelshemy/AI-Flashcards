@@ -18,8 +18,8 @@ const ResultPage = () => {
     const [error, setError] = useState(null)
 
     useEffect(() => {
-        const fetchCheckoutSession = async() => {
-            if (!session_id) return
+        const fetchCheckoutSession = async () => {
+            if (!session_id || !user?.id) return
 
             try {
                 const res = await fetch(`/api/checkout_session?session_id=${session_id}`)
@@ -27,11 +27,11 @@ const ResultPage = () => {
                 if (res.ok) {
                     setSession(sessionData)
                     if (sessionData.payment_status === "paid") {
-                        const tier = sessionData.display_items[0].custom.name === "Pro Tier" ? "pro" : "basic"
+                        const tier = sessionData.display_items[0].custom.name === "Pro Subscription" ? "pro" : "basic"
                         await setDoc(doc(db, "users", user.id), { tier }, { merge: true })
                     }
                 } else {
-                    setError(sessionData.error)
+                    setError(sessionData.error.message)
                 }
             } catch (err) {
                 setError('An error occurred')
@@ -40,60 +40,60 @@ const ResultPage = () => {
             }
         }
         fetchCheckoutSession()
-    }, [session_id, user.id])
+    }, [session_id, user?.id])
 
     if (loading) {
         return (
             <Container 
-                maxWidth = "100vw"
-                sx = {{
+                maxWidth="100vw"
+                sx={{
                     textAlign: 'center',
                     mt: 4,
                 }}
             >
                 <CircularProgress />
-                <Typography variant = "h6">Loading...</Typography>
+                <Typography variant="h6">Loading...</Typography>
             </Container>
         )
     }
     if (error) {
         return (
             <Container 
-                maxWidth = "100vw"
-                sx = {{
+                maxWidth="100vw"
+                sx={{
                     textAlign: 'center',
                     mt: 4,
                 }}
             >
-                <Typography variant = "h6">{error}</Typography>
+                <Typography variant="h6">{error}</Typography>
             </Container>
         )
     }
     
     return(
         <Container 
-            maxWidth = "100vw"
-            sx = {{
+            maxWidth="100vw"
+            sx={{
                 textAlign: 'center',
                 mt: 4,
             }}
         >
             {
-                session.payment_status === "paid"? (
+                session.payment_status === "paid" ? (
                     <>
-                        <Typography variant = "h4">Thank you for purchasing!</Typography>
-                        <Box sx = {{mt:22}}>
-                            <Typography variant = "h6">Session ID: {session_id}</Typography>
-                            <Typography variant = "body1">
+                        <Typography variant="h4">Thank you for purchasing!</Typography>
+                        <Box sx={{ mt: 22 }}>
+                            <Typography variant="h6">Session ID: {session_id}</Typography>
+                            <Typography variant="body1">
                                 We have received your payment. You will receive an email with the order details shortly.
                             </Typography>
                         </Box>
                     </>
                 ) : (
                     <>
-                        <Typography variant = "h4">Payment Failed.</Typography>
-                        <Box sx = {{mt:22}}>
-                            <Typography variant = "body1">
+                        <Typography variant="h4">Payment Failed.</Typography>
+                        <Box sx={{ mt: 22 }}>
+                            <Typography variant="body1">
                                 Your payment was not successful. Please try again. 
                             </Typography>
                         </Box>
@@ -103,6 +103,5 @@ const ResultPage = () => {
         </Container>
     )
 }
-
 
 export default ResultPage

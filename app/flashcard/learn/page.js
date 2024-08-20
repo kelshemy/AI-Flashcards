@@ -232,7 +232,7 @@ export default function Learn() {
             onClick={handlePauseAndExit}
             sx={{ mt: 2, width: "100%" }}
           >
-            Pause and Exit
+            Exit
           </Button>
         </Box>
       </Container>

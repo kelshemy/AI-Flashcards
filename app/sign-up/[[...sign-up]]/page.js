@@ -12,7 +12,7 @@ export default function SignUpPage() {
                         flexGrow: 1
                     }}
                 >
-                    Flashcard SaaS
+                    CardQuest
                 </Typography>
                 <Button color = "inherit">
                     <Link href = "/sign-in" passHref>

@@ -14,7 +14,7 @@ Guidelines:
 8. Tailor the difficulty level of the flashcards to the user's specifed preferences. 
 9. If given a body of text, extract the most important and relevant information for the flashcards. 
 10. Aim to create a balanced set of flashcards that covers the topic comprehensively. 
-11. Only generate 10 flashcards.
+11. Only generate 12 flashcards.
 
 Remember the goal is to facilitate effective learning and retention of information through these flashcards. 
 

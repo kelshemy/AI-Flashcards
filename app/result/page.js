@@ -4,8 +4,12 @@ import { useRouter } from "next/navigation"
 import getStripe from '@/utils/get-stripe'
 import { useSearchParams } from "next/navigation"
 import { CircularProgress, Typography, Container, Box } from "@mui/material"
+import { db } from "@/firebase"
+import { doc, setDoc } from "firebase/firestore"
+import { useUser } from "@clerk/nextjs"
 
 const ResultPage = () => {
+    const { user } = useUser()
     const router = useRouter()
     const searchParams = useSearchParams()
     const session_id = searchParams.get('session_id')
@@ -22,6 +26,10 @@ const ResultPage = () => {
                 const sessionData = await res.json()
                 if (res.ok) {
                     setSession(sessionData)
+                    if (sessionData.payment_status === "paid") {
+                        const tier = sessionData.display_items[0].custom.name === "Pro Tier" ? "pro" : "basic"
+                        await setDoc(doc(db, "users", user.id), { tier }, { merge: true })
+                    }
                 } else {
                     setError(sessionData.error)
                 }
@@ -32,7 +40,7 @@ const ResultPage = () => {
             }
         }
         fetchCheckoutSession()
-    }, [session_id])
+    }, [session_id, user.id])
 
     if (loading) {
         return (
@@ -61,6 +69,7 @@ const ResultPage = () => {
             </Container>
         )
     }
+    
     return(
         <Container 
             maxWidth = "100vw"
